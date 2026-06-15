@@ -62,11 +62,9 @@ public class CellNode : MonoBehaviour
 
     private Color defaultColor;
 
-    [SerializeField]
-    private Color highlightColor = Color.green;
-
-
-
+    [SerializeField] private Color forwardColor = Color.green; //次のマスの色（緑）
+    [SerializeField] private Color backwardColor = Color.cyan; //一個目のマスのいろ（青）
+    [SerializeField] private Color destinationColor = Color.yellow; //出た数字の移動可能なマスの場所（黄色）
 
 
     ///||||||||||||||||||||||||||||||||||||||||||||||||
@@ -96,22 +94,18 @@ public class CellNode : MonoBehaviour
     // 接続されたマス同士を線で結ぶ
     private void CreateConnections()
     {
-        foreach (CellNode next in nextNodes)
+        foreach(CellNode next in nextNodes)
         {
-            if(next == null)
-                continue;
+            if(next == null) continue;
 
             // 二重生成防止
-            if(GetInstanceID() > next.GetInstanceID())
-                continue;
+            if(GetInstanceID() > next.GetInstanceID()) continue;
 
-            GameObject lineObj =
-                new GameObject($"Line_{name}_{next.name}");
+            GameObject lineObj =new GameObject($"Line_{name}_{next.name}");
 
             lineObj.transform.SetParent(transform);
 
-            LineRenderer lr =
-                lineObj.AddComponent<LineRenderer>();
+            LineRenderer lr =lineObj.AddComponent<LineRenderer>();
 
             lr.material = lineMaterial;
 
@@ -119,13 +113,9 @@ public class CellNode : MonoBehaviour
 
             lr.useWorldSpace = true;
 
-            lr.SetPosition(
-                0,
-                transform.position + Vector3.up * 0.1f);
+            lr.SetPosition(0,transform.position + Vector3.up * 0.1f);
 
-            lr.SetPosition(
-                1,
-                next.transform.position + Vector3.up * 0.1f);
+            lr.SetPosition(1,next.transform.position + Vector3.up * 0.1f);
 
             // 線の太さ
             lr.startWidth = 0.1f;
@@ -146,15 +136,34 @@ public class CellNode : MonoBehaviour
 
 
     /// 移動可能マスのハイライト
-    public void Highlight(bool enable)
+    public enum HighlightType
     {
-        if(meshRenderer == null)
-            return;
-
-        meshRenderer.material.color =
-            enable ? highlightColor : defaultColor;
+        None,Forward,Backward,Destination
     }
-
+    public void Highlight(HighlightType type)
+    {
+        if(meshRenderer == null) return;
+        switch(type)
+        {
+            case HighlightType.None:
+            meshRenderer.material.color = defaultColor;
+            break;
+            
+            case HighlightType.Forward:
+            meshRenderer.material.color = forwardColor;
+            break;
+            
+            
+            case HighlightType.Backward:
+            meshRenderer.material.color = backwardColor;
+            break;
+            
+            case HighlightType.Destination:
+            meshRenderer.material.color = destinationColor;
+            break;
+        }
+        
+    }
 
 
     /// プレイヤーがこのマスに到着した
@@ -162,13 +171,20 @@ public class CellNode : MonoBehaviour
     {
         if(cellData == null)
         {
-            Debug.LogWarning(
-                $"{name} に CellData が設定されていません");
-
+            Debug.LogWarning($"{name} に CellData が設定されていません");
             return;
         }
 
         CellEventManager.Instance.Execute(this);
+    }
+    private void OnMouseDown()
+    {
+        PlayerMover player = FindAnyObjectByType<PlayerMover>();
+        
+        if(player == null) return;
+        if(!player.IsDestinationMode) return;
+        if(!player.IsReachable(this)) return;
+        player.SelectDestination(this);
     }
 
     
