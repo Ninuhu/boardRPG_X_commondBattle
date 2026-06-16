@@ -1,6 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+/*InvalidOperationException: Queue empty.
+System.Collections.Generic.Queue`1[T].Dequeue () (at <f713e1c3c5f545ce9b1df47230f4f853>:0)
+PlayerMover.Update () (at Assets/Scripts/PlayerMover.cs:70)*/
+
 public class PlayerMover : MonoBehaviour
 {
     public CellNode currentNode;
@@ -58,13 +62,17 @@ public class PlayerMover : MonoBehaviour
             }
             currentNode = targetNode;
             targetNode = null;
+            Debug.Log($"到着 : {currentNode.name}"); //確認用
 
 
 
             // 自動移動が残っているなら続行
             if(autoMovePath.Count>0)
             {
+                CellNode next = autoMovePath.Dequeue(); //確認用
+                Debug.Log($"次の自動移動 : {next.name}"); //確認用
                 MoveTo(autoMovePath.Dequeue());
+                
                 return;
             }
 
@@ -191,13 +199,22 @@ public class PlayerMover : MonoBehaviour
     //黄色マスをクリックで自動移動
     public void SelectDestination(CellNode destination)
     {
-        if(!destinationPaths.ContainsKey(destination)) return;
-        
+        if(!destinationPaths.ContainsKey(destination)){
+            Debug.Log($"ルートなし : {destination.name}"); //確認用
+            return;
+        }
+        Debug.Log($"選択された黄色マス : {destination.name}");
         autoMovePath.Clear();
         
-        foreach(CellNode node in destinationPaths[destination]) autoMovePath.Enqueue(node);
-        
-        if(targetNode == null &&autoMovePath.Count > 0) MoveTo(autoMovePath.Dequeue());
+        foreach(CellNode node in destinationPaths[destination]){
+            Debug.Log($"経路 : {node.name}"); //確認用
+            autoMovePath.Enqueue(node);
+        }
+        if(targetNode == null &&autoMovePath.Count > 0){
+            CellNode next = autoMovePath.Dequeue(); //確認用
+            Debug.Log($"自動移動開始 → {next.name}"); //確認用
+            MoveTo(autoMovePath.Dequeue());
+        }
 
     }
     public bool IsDestinationMode => showingDestination;
