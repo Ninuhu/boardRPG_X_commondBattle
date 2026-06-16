@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/*InvalidOperationException: Queue empty.
-System.Collections.Generic.Queue`1[T].Dequeue () (at <f713e1c3c5f545ce9b1df47230f4f853>:0)
-PlayerMover.Update () (at Assets/Scripts/PlayerMover.cs:70)*/
+/**/
 
 public class PlayerMover : MonoBehaviour
 {
@@ -41,6 +39,7 @@ public class PlayerMover : MonoBehaviour
 
         if(Vector3.Distance(transform.position,targetPos)<0.01f)
         {
+            Debug.Log($"到着直前 targetNode = {targetNode.name}");
             transform.position = targetPos;
             
 
@@ -71,7 +70,9 @@ public class PlayerMover : MonoBehaviour
             {
                 CellNode next = autoMovePath.Dequeue(); //確認用
                 Debug.Log($"次の自動移動 : {next.name}"); //確認用
-                MoveTo(autoMovePath.Dequeue());
+                 Debug.Log($"Queue残り : {autoMovePath.Count}");
+                MoveTo(next);
+                //MoveTo(autoMovePath.Dequeue());
                 
                 return;
             }
@@ -97,8 +98,11 @@ public class PlayerMover : MonoBehaviour
 
     public void MoveTo(CellNode node)
     {
+        
+
         // 移動回数が無いなら動けない
         if(RemainingMove<=0) return;
+        Debug.Log($"MoveTo : {node.name}");
         
         targetNode = node;
     }
@@ -171,7 +175,11 @@ public class PlayerMover : MonoBehaviour
         {
             reachableNodes.Add(node);
             
-            if(!destinationPaths.ContainsKey(node)) destinationPaths[node] =new List<CellNode>(path);
+            //if(!destinationPaths.ContainsKey(node)) 
+            if (!destinationPaths.ContainsKey(node))
+{
+    destinationPaths[node] = new List<CellNode>(path);
+}
             
             return;
         }
@@ -180,9 +188,18 @@ public class PlayerMover : MonoBehaviour
 
         foreach(CellNode next in node.nextNodes)
         {
+            Debug.Log(
+        $"探索中 現在:{node.name} 次:{next.name} " +
+        $"残り:{remaining} " +
+        $"戻り判定:{(history.Count > 0 ? history.Peek().name : "なし")}"
+    );
             bool movedBack =history.Count > 0 && next == history.Peek();
             
-            if(movedBack) continue;
+            if(movedBack){
+                Debug.Log($"戻り禁止 {node.name} → {next.name}");
+                continue;
+
+            }
             Stack<CellNode> newHistory = new Stack<CellNode>(history);
             
             newHistory.Push(node);
@@ -204,16 +221,30 @@ public class PlayerMover : MonoBehaviour
             return;
         }
         Debug.Log($"選択された黄色マス : {destination.name}");
+
+
+Debug.Log($"経路数 : {destinationPaths[destination].Count}");
+
+for (int i = 0; i < destinationPaths[destination].Count; i++)
+{
+    Debug.Log($"[{i}] {destinationPaths[destination][i].name}");
+}
+
+
+
+
+
         autoMovePath.Clear();
         
         foreach(CellNode node in destinationPaths[destination]){
             Debug.Log($"経路 : {node.name}"); //確認用
             autoMovePath.Enqueue(node);
         }
-        if(targetNode == null &&autoMovePath.Count > 0){
-            CellNode next = autoMovePath.Dequeue(); //確認用
-            Debug.Log($"自動移動開始 → {next.name}"); //確認用
-            MoveTo(autoMovePath.Dequeue());
+        if(targetNode == null && autoMovePath.Count > 0)
+        {
+            CellNode next = autoMovePath.Dequeue();
+            Debug.Log($"自動移動開始 → {next.name}");
+            MoveTo(next);
         }
 
     }
