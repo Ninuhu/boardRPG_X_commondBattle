@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c5f1179daa4b4d46b3a1105b8f6066b, type: 3}
+  m_Name: "\u6226\u58EB"
+  m_EditorClassIdentifier: Assembly-CSharp::JobData
+  jobID: 1
+  jobName: "\u6226\u58EB"
+  description: 
+  rank: 0
+  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  hpGrowth: 1
+  attackGrowth: 2
+  defenseGrowth: 1
+  magicAttackGrowth: 0
+  magicDefenseGrowth: 1
+  speedGrowth: 1
+  masteryAttackBonus: 1
+  masteryDefenseBonus: 0
+  masteryMagicAttackBonus: 0
+  masteryMagicDefenseBonus: 0
+  masterySpeedBonus: 0
+  masteryHPBonus: 0
+  maxItemCount: 6
+  maxSpellBookCount: 4
+  firstChangeCost: 100
+  requiredJobID: 0

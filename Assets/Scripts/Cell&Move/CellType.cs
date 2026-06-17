@@ -3,19 +3,12 @@ using UnityEngine;
 public enum CellType
 {
     Battle,
-
     Shop,
-
     Village,
-
     Treasure,
-
     Transition,
-
     Church,
-
     Inn,
-
     Castle
 }
 

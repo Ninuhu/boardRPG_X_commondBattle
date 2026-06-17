@@ -65,10 +65,7 @@ public class RouletteUI : MonoBehaviour
             float easedT = 1f - Mathf.Pow(1f - t, 3);
 
             // 常に時計回り
-            float angle = Mathf.Lerp(
-                startAngle,
-                finalAngle,
-                easedT);
+            float angle = Mathf.Lerp(startAngle, finalAngle,easedT);
 
             needlePivot.rotation =
                 Quaternion.Euler(0f, 0f, angle);

@@ -174,13 +174,9 @@ public class PlayerMover : MonoBehaviour
         if(remaining == 0)
         {
             reachableNodes.Add(node);
-            
             //if(!destinationPaths.ContainsKey(node)) 
-            if (!destinationPaths.ContainsKey(node))
-{
-    destinationPaths[node] = new List<CellNode>(path);
-}
-            
+            if (!destinationPaths.ContainsKey(node)) destinationPaths[node] = new List<CellNode>(path);
+
             return;
         }
 
@@ -188,11 +184,7 @@ public class PlayerMover : MonoBehaviour
 
         foreach(CellNode next in node.nextNodes)
         {
-            Debug.Log(
-        $"探索中 現在:{node.name} 次:{next.name} " +
-        $"残り:{remaining} " +
-        $"戻り判定:{(history.Count > 0 ? history.Peek().name : "なし")}"
-    );
+            Debug.Log($"探索中 現在:{node.name} 次:{next.name} " + $"残り:{remaining} " + $"戻り判定:{(history.Count > 0 ? history.Peek().name : "なし")}");
             bool movedBack =history.Count > 0 && next == history.Peek();
             
             if(movedBack){
@@ -221,14 +213,12 @@ public class PlayerMover : MonoBehaviour
             return;
         }
         Debug.Log($"選択された黄色マス : {destination.name}");
-
-
-Debug.Log($"経路数 : {destinationPaths[destination].Count}");
-
-for (int i = 0; i < destinationPaths[destination].Count; i++)
-{
-    Debug.Log($"[{i}] {destinationPaths[destination][i].name}");
-}
+        
+        Debug.Log($"経路数 : {destinationPaths[destination].Count}");
+        for (int i = 0; i < destinationPaths[destination].Count; i++)
+        {
+            Debug.Log($"[{i}] {destinationPaths[destination][i].name}");
+        }
 
 
 
