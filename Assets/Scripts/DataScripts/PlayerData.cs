@@ -14,6 +14,7 @@ public class PlayerData
 
     [Header("職業")]
     public JobData currentJob; //今のジョブ
+    public List<JobMasteryData> jobMasteries = new(); //今までついた職
 
     [Header("ステータス")]
 
@@ -33,13 +34,16 @@ public class PlayerData
    public int speed = 5;
 
     [Header("自由スキル")]
-    public string equippedFreeSkill;
-    //public SkillData equippedFreeSkill; SkillData作ったらこれに入れ替える
+    //public string equippedFreeSkill;
+    public SkillData equippedFreeSkill; //SkillData作ったらこれに入れ替える
+
     [Header("装備中魔法")]
-    public string equippedAttackMagic;
-    //public MagicData equippedAttackMagic; MagicData作ったら入れ替え
-    public string equippedDefenseMagic;
-    // public MagicData equippedDefenseMagic;
+    //public string equippedAttackMagic;
+    public MagicData equippedAttackMagic; //MagicData作ったら入れ替え
+    //public string equippedDefenseMagic;
+    public MagicData equippedDefenseMagic;
+
+    
     [Header("村")]
     public List<int> ownedVillageIDs = new();
 

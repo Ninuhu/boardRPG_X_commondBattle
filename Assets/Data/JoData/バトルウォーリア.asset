@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c5f1179daa4b4d46b3a1105b8f6066b, type: 3}
-  m_Name: "\u6226\u58EB"
+  m_Name: "\u30D0\u30C8\u30EB\u30A6\u30A9\u30FC\u30EA\u30A2"
   m_EditorClassIdentifier: Assembly-CSharp::JobData
-  jobID: 1
-  jobName: "\u6226\u58EB"
-  description: "\u3042\u3042"
-  rank: 0
-  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  hpGrowth: 1
+  jobID: 11
+  jobName: "\u30D0\u30C8\u30EB\u30A6\u30A9\u30FC\u30EA\u30A2"
+  description: "\uFF47\uFF47"
+  rank: 1
+  icon: {fileID: 0}
+  hpGrowth: 10
   attackGrowth: 2
   defenseGrowth: 1
   magicAttackGrowth: 0
@@ -29,8 +29,8 @@ MonoBehaviour:
   masteryMagicAttackBonus: 0
   masteryMagicDefenseBonus: 0
   masterySpeedBonus: 0
-  maxItemCount: 6
+  maxItemCount: 8
   maxSpellBookCount: 4
   attackMagicUses: 2
-  firstChangeCost: 100
-  requiredJob: {fileID: 0}
+  firstChangeCost: 200
+  requiredJob: {fileID: 11400000, guid: d80f239b60097ff48891af8e25c959bf, type: 2}
