@@ -10,7 +10,12 @@ public enum EffectType
     RemoveStatus, //状態異常回復
     CriticalRateUp, //クリティカル倍率
     Counter, //ダメージ受けた時の反撃
-    MultiAttack //追加ダメージ
+    AdditionalAttack ,//追加ダメージ
+    GainGold, //得られる金(宝箱ますで使う)
+    LoseGold, //失う金（宝箱マスに使う）
+    GainExp, //得られる経験値
+    Revive, //リバイブ（復活）
+    Warp//ワープ
 
 
 }

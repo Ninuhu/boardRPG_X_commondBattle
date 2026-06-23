@@ -6,13 +6,14 @@ using UnityEngine;
 public class InventoryData
 {
     [Header("所持アイテム")]
-    public List<string> items = new();
+    public List<ItemData> items = new();
+
 
     [Header("所持魔術書")]
-    public List<string> spellBooks = new();
+    public List<SpellBookData> spellBooks = new();
 
     [Header("装備")]
-    public string weapon;
-    public string shield;
-    public string accessory;
+    public EquipmentData weapon;
+    public EquipmentData shield;
+    public EquipmentData accessory;
 }

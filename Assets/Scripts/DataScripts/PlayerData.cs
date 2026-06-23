@@ -9,7 +9,8 @@ public class PlayerData
     public string playerName;
     public int playerID; //ID
     public int level = 1; //現在のレベル
-    public int experience;
+    public int experience; //現在経験値
+    public int totalExperience; //累計経験値
     public int gold; //現在の資金
 
     [Header("職業")]
@@ -33,6 +34,10 @@ public class PlayerData
    public int magicDefense = 5;
    public int speed = 5;
 
+   
+   [Tooltip("現在の状態異常")]
+   public List<ActiveStatusEffect> statusEffects = new();
+
     [Header("自由スキル")]
     //public string equippedFreeSkill;
     public SkillData equippedFreeSkill; //SkillData作ったらこれに入れ替える
@@ -43,9 +48,13 @@ public class PlayerData
     //public string equippedDefenseMagic;
     public MagicData equippedDefenseMagic;
 
+
+    [Header("所持品")]
+    public InventoryData inventory = new();
+
     
     [Header("村")]
-    public List<int> ownedVillageIDs = new();
+    public List<int> ownedVillageIDs = new(); //ID(個数)でカウント
 
     [Header("教会")]
     public int registeredChurchID = -1;

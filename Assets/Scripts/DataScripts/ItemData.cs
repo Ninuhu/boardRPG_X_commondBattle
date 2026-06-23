@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "ItemData",menuName = "GameData/Item Data")]
 public class ItemData : ScriptableObject
@@ -10,19 +10,19 @@ public class ItemData : ScriptableObject
     public string itemName;
 
     [TextArea]
-    public string description;
+    public string description; //説明
 
     public Sprite icon;
 
     [Header("価格")]
-    public int price;
+    public int price; //値段
 
-    [Header("HP回復")]
+    /*[Header("HP回復")]
     public int healHP;
 
     [Header("状態異常回復")]
-    public List<StatusEffectType> cureStatuses = new();
+    public List<StatusEffectType> cureStatuses = new();*/
 
-    [Header("特殊効果")]
+    [Header("効果")]
     public List<EffectData> effects = new();
 }

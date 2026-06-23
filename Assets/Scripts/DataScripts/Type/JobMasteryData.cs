@@ -11,6 +11,8 @@ public class JobMasteryData
 
     [Tooltip("現在の勝利数")]
     public int currentWins;
+    [Tooltip("合計勝利数")]
+    public int totalWins;
 
     [Tooltip("マスター済みか")]
     public bool isMastered;

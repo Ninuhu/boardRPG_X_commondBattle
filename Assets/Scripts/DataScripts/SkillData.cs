@@ -13,6 +13,9 @@ public class SkillData : ScriptableObject
     public string description;
 
     public Sprite icon;
+    [Header("性能")]
+    public int power; //威力（バフとかなら０）
+
     [Header("特殊効果")]
     public List<EffectData> effects = new();
 }
