@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 818044c55bf107f49a45f38b00d58aa4, type: 3}
+  m_Name: "\u30DE\u30A4\u30B1\u30EB"
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  enemyID: 0
+  enemyName: "\u30DE\u30A4\u30B1\u30EB"
+  description: 
+  icon: {fileID: 0}
+  level: 10
+  maxHP: 200
+  attack: 1
+  defense: 1
+  magicAttack: 2
+  magicDefense: 1
+  speed: 1000
+  equippedAttackMagic: {fileID: 11400000, guid: 428d1509c9206eb4982f58bffa464b6d, type: 2}
+  equippedDefenseMagic: {fileID: 11400000, guid: 3f48844f0d458bd4685cef7fbc0e0123, type: 2}
+  attackMagicUses: 3
+  race: 7
+  isBoss: 0
+  aiType: 0
+  resistances: 
+  expReward: 100
+  goldReward: 10
+  skills:
+  - {fileID: 11400000, guid: 50d3cfbe22f77224baffbc4ae8c73c36, type: 2}
+  dropChance: 100
+  rareDrops:
+  - item: {fileID: 0}
+    spellBook: {fileID: 0}
+    skill: {fileID: 0}
+    equipment: {fileID: 11400000, guid: 8f4a11a3516aa3049a1a16f587d3126c, type: 2}
+    dropWeight: 20
+  normalDrops1:
+  - item: {fileID: 11400000, guid: 89a47fd01d16b6b4589192d511762684, type: 2}
+    spellBook: {fileID: 0}
+    skill: {fileID: 0}
+    equipment: {fileID: 0}
+    dropWeight: 30
+  normalDrops2: []
+  rareWeight: 1
+  normal1Weight: 9
+  normal2Weight: 0

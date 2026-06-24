@@ -6,6 +6,9 @@ public class EnemyDropData
 {
     [Header("ドロップ内容")]
     public ItemData item;
+    public SpellBookData spellBook;
+    public SkillData skill;
+    public EquipmentData equipment; //武器、防具、装飾品
 
     [Range(0,100)]
     public float dropWeight = 1f;
@@ -17,7 +20,17 @@ public enum EnemyAIType
     MagicFocused,    //魔法重視
     Boss             //ボス専用
 }
-
+public enum RaceType
+{
+    Slime,
+    Beast,
+    Undead,
+    Human,
+    Demon,
+    Dragon,
+    Machine,
+    Plant
+}
 
 [CreateAssetMenu(fileName = "EnemyData",menuName = "GameData/Enemy Data")]
 public class EnemyData : ScriptableObject
@@ -31,7 +44,8 @@ public class EnemyData : ScriptableObject
     public string description;
 
     public Sprite icon;
-
+    [Header("レベル")]
+    public int level = 1;
     [Header("ステータス")]
     public int maxHP;
 
@@ -53,7 +67,8 @@ public class EnemyData : ScriptableObject
 
     
     [Header("属性(種族)")]
-    public ElementType element; 
+    //public ElementType element; 
+    public RaceType race;
     [Header("ボスか否か")]
     public bool isBoss;
     

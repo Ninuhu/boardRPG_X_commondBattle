@@ -1,5 +1,6 @@
 public enum StateType
 {
+    None,
     HP,
     Attack,
     Defense,

@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc8f23c02e200134c8e86bab75e4d5c6, type: 3}
-  m_Name: "\u6226\u58EB"
+  m_Name: "E_\u529B\u305F\u3081"
   m_EditorClassIdentifier: Assembly-CSharp::SkillData
-  skillID: 1
-  skillName: "\u529B\u305F\u3081"
+  skillID: 0
+  skillName: 
   description: 
   icon: {fileID: 0}
-  effects:
-  - effectType: 1
-    targetStat: 1
-    value: 2
-    chance: 100
-    statusEffect: 0
+  power: 0
+  effects: []

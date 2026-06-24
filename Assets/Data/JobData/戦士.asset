@@ -29,8 +29,10 @@ MonoBehaviour:
   masteryMagicAttackBonus: 0
   masteryMagicDefenseBonus: 0
   masterySpeedBonus: 0
+  masteryEffects: []
   maxItemCount: 6
   maxSpellBookCount: 4
   attackMagicUses: 2
   firstChangeCost: 100
-  requiredJob: {fileID: 0}
+  requiredJobs: []
+  requiredEventID: -1
