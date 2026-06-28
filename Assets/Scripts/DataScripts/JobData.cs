@@ -13,6 +13,11 @@ public class JobData : ScriptableObject
     public string description;
     public JobRank rank; //初級職、中級職、上級職
     public Sprite icon;
+    [Header("職業スキル")]
+    [Tooltip("攻撃コマンド時")]
+    public SkillData jobSkill;
+    [Tooltip("防御コマンド時")]
+    public SkillData jobSkillDefense;
 
 
     [Header("レベルアップ成長")]

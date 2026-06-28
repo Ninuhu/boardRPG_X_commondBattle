@@ -66,7 +66,7 @@ public class EnemyData : ScriptableObject
     public int attackMagicUses = 3;
 
     
-    [Header("属性(種族)")]
+    //[Header("属性(種族)")]
     //public ElementType element; 
     public RaceType race;
     [Header("ボスか否か")]
@@ -85,7 +85,9 @@ public class EnemyData : ScriptableObject
 
     [Header("行動")]
     [Tooltip("通常攻撃等のみなら空でOK")]
-    public List<SkillData> skills = new();
+    public SkillData skill; //厳密にはenemyはjobないので違う
+    [Header("防御スキル")]
+    public SkillData GuardSkill;
 
     [Header("ドロップ率")]
     [Range(0,100)]

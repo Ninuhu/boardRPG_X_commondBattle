@@ -1,6 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
+public enum SkillType
+{
+    Attack,
+    Guard
+}
 [CreateAssetMenu(fileName = "SkillData",menuName = "GameData/Skill Data")]
 public class SkillData : ScriptableObject
 {
@@ -14,6 +20,7 @@ public class SkillData : ScriptableObject
 
     public Sprite icon;
     [Header("性能")]
+    public SkillType skillType; //攻撃コマンドか防御コマンド用か
     public int power; //威力（バフとかなら０）
 
     [Header("特殊効果")]
