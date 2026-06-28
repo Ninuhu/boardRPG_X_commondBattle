@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "\u708E"
   m_EditorClassIdentifier: Assembly-CSharp::SpellBookData
   spellbookID: 0
-  spellbookName: 
+  spellbookName: aaa
   description: 
   icon: {fileID: 0}
   price: 100
