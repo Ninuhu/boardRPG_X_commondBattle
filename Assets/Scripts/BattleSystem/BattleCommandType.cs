@@ -1,4 +1,7 @@
-public enum BattleActionType
+using System;
+
+
+public enum BattleCommandType
 {
     //攻撃コマンド
     Attack, //通常攻撃
@@ -16,4 +19,16 @@ public enum BattleActionType
 
     //SpellBook,   //将来用
     //Item         //将来用
+}
+
+[Serializable]
+public class BattleCommand
+{
+    public BattleCharacter user; // 行動するキャラクター
+    public BattleCharacter target;// 対象
+    public BattleCommandType commandType; // 選択したコマンド
+
+    public MagicData magic;// 攻撃魔法・防御魔法
+    public SkillData skill;// スキル
+    public SkillData guardSkill; // ssスキル防御で使用するスキル
 }

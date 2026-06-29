@@ -118,6 +118,8 @@ public static class BattleCalculator
     // クリティカル(仮)
     public static bool IsCritical(BattleCharacter attacker,BattleCharacter defender)
     {
+        /*const float Min_Critical = 0.05f;
+        const float Max_Critical = 0.50f;*/
         float chance =0.05f +(attacker.speed - defender.speed) * 0.01f;
 
         chance = Mathf.Clamp(chance,0.05f,0.50f);
@@ -130,7 +132,8 @@ public static class BattleCalculator
     1-（攻撃者のspd/防御者のspd）   0.4が限度で*/
     public static bool IsDodged(BattleCharacter attacker,BattleCharacter defender)
     {
-        float dodgeRate =1f - ((float)attacker.speed / defender.speed) + 0.01f;
+        float defenderSpeed = Mathf.Max(1, defender.speed); // attacker.speed / defenderSpeed==0になったら壊れるから
+        float dodgeRate =1f - (attacker.speed / defenderSpeed) + 0.01f;
         dodgeRate = Mathf.Clamp(dodgeRate,0.01f,0.40f); //さいだい 40%までしか回避率は上がらない
         return Random.value <= dodgeRate;
     }
