@@ -44,19 +44,7 @@ using System.Collections.Generic;
 ・クリティカル率補正
 ・回避率補正*/
 
-//|||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//戦闘中専用のBuff,DeBuffクラス（力ための2倍処理など）
-[System.Serializable]
-public class ActiveEffect
-{
-    [Header("元の効果データ")]
-    public EffectData effect;
-    [Header("残りターン数")]
 
-    public int remainingTurns;
-    [Header("buff等が永続か否か")]
-    public bool isPermanent;
-}
 
 //|||||||||||||||||||||||||||||||||||||||||||||||||||||||
 [System.Serializable]
@@ -118,4 +106,37 @@ public class BattleCharacter
 
     [Header("戦闘終了")]
     public bool isDead;
+
+
+    // PlayerData
+    public BattleCharacter(PlayerData data)
+    {
+        characterName = data.playerName;
+        playerData = data;
+        isPlayer = true;
+
+        maxHP = data.maxHP;
+        currentHP = data.maxHP;
+        attack = data.attack;
+        defense = data.defense;
+        magicAttack = data.magicAttack;
+        magicDefense = data.magicDefense;
+        speed = data.speed;
+    }
+    // 敵データ
+    public BattleCharacter(EnemyData data)
+    {
+        characterName = data.enemyName;
+        enemyData = data;
+        isPlayer = false;
+
+        maxHP = data.maxHP;
+        currentHP = data.maxHP;
+        attack = data.attack;
+        defense = data.defense;
+        magicAttack = data.magicAttack;
+        magicDefense = data.magicDefense;
+        speed = data.speed;
+    }
+
 }

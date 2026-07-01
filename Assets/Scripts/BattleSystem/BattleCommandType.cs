@@ -28,7 +28,7 @@ public class BattleCommand
     public BattleCharacter target;// 対象
     public BattleCommandType commandType; // 選択したコマンド
 
-    public MagicData magic;// 攻撃魔法・防御魔法
-    public SkillData skill;// スキル
-    public SkillData guardSkill; // ssスキル防御で使用するスキル
+    public MagicData magic; // 攻撃魔法・防御魔法
+    public SkillData skill; // 使用するスキル（職業・自由・スキル防御）
+    public bool isCritical; // クリティカルか(魔法や一部スキルは対象外)
 }
