@@ -15,11 +15,12 @@ public class BattleManager : MonoBehaviour
 
     [Header("ターン")]
     private int turnCount; //ターン数
+    private bool playerFirst; //どっちが先か
 
     [Header("戦闘状態")]
     private bool battleEnded; //戦闘が終わったか否か
     private bool isPvP; // Enemyではなくplayerかいなか
-
+    
    
     
 
@@ -52,6 +53,19 @@ public class BattleManager : MonoBehaviour
 
         StartTurn();
     }
+
+    
+
+    //||||||||||||||||||||||||||||||||||||||||
+    //目押しによる判定からの結果受け取り
+    void OnFirstTurnDecided(bool isPlayerFirst)
+    {
+        playerFirst = isPlayerFirst;
+        Debug.Log(playerFirst ? "Player First" : "Enemy First");
+        // ここでコマンド入力フェーズ
+        // // UI表示など
+    }
+    
     
 
     //||||||||||||||||||||||||||||||||||||||||
@@ -69,6 +83,7 @@ public class BattleManager : MonoBehaviour
 
         // TODO
         // 目押し開始
+        SpeedGaugeUI.Instance.StartGauge(player.speed,enemy.speed,OnFirstTurnDecided);
         // BattleUI表示
     }
 
@@ -110,18 +125,28 @@ public class BattleManager : MonoBehaviour
     void ExecuteTurn()
     {
         Debug.Log("Turn Execute");
-
-        // TODO
-        // 先攻判定
-        // 行動実行
-        // BattleCalculator
-        // BattleEffectProcessor
-
-        CheckBattleEnd();
-
-        if(!battleEnded) EndTurn();
+        if(playerFirst)
+        {
+            ExecuteAction(attackCommand,defenseCommand);
+            if(!battleEnded) ExecuteAction(defenseCommand,attackCommand);
+        }
         
+        else
+        {
+            ExecuteAction(defenseCommand,attackCommand);
+            if(!battleEnded) ExecuteAction(attackCommand,defenseCommand);
+        }
+        CheckBattleEnd();
+        if(!battleEnded) EndTurn();
     }
+
+    //||||||||||||||||||||||||||||||||||||||||
+    // // 行動実行
+    void ExecuteAction(BattleCommand action,BattleCommand target)
+    {
+        //BattleActionExecutor.Execute(action,target);
+    }
+    
 
     //||||||||||||||||||||||||||||||||||||||||
     // ターン終了
