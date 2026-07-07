@@ -80,6 +80,13 @@ public static class BattleActionExecutor
     // コマンド実行
     public static void Execute(BattleCommand action,BattleCommand target)
     {
+        //もし使用回数0なら選択不可
+        if(!CanExecute(action))
+        {
+            Debug.Log("使用回数不足");
+            return;
+        }
+
         switch(action.commandType)
         {
             //攻撃
@@ -91,27 +98,76 @@ public static class BattleActionExecutor
             case BattleCommandType.AllOutAttack:
                 ExecuteAllOutAttack(action,target);
                 break;
+
+
                 //魔法こうげっき
             case BattleCommandType.AttackMagic:
                 ExecuteAttackMagic(action,target);
+                ConsumeSkillUse(action.user, action.commandType);
                 break;
 
                 //職業スキル
             case BattleCommandType.JobSkill:
                 ExecuteJobSkill(action,target);
+                ConsumeSkillUse(action.user, action.commandType);
                 break;
 
                 //自由選択スキル
             case BattleCommandType.FreeSkill:
                 ExecuteFreeSkill(action,target);
+                ConsumeSkillUse(action.user, action.commandType);
                 break;
 
                 //降参
             case BattleCommandType.Surrender:
                 ExecuteSurrender(action.user);
+                
                 break;
 
                 
         }
     }
+
+
+    //||||||||||||||||||||||||||||||||||||||||||||||
+    // 使用回数減少
+    static void ConsumeSkillUse(BattleCharacter character, BattleCommandType type)
+    {
+        switch(type)
+        {
+            //無制限が-1なので>0なら大丈夫
+
+            case BattleCommandType.AttackMagic:
+            if(character.remainingAttackMagicUses > 0) character.remainingAttackMagicUses--;
+            break;
+
+            case BattleCommandType.JobSkill:
+            if(character.remainingJobSkillUses > 0) character.remainingJobSkillUses--;
+            break;
+            
+            case BattleCommandType.FreeSkill:
+            if(character.remainingFreeSkillUses > 0) character.remainingFreeSkillUses--;
+            break;
+        }
+    }
+
+    //使用回数のあるskillや魔法が0か0以上か
+    static bool CanExecute(BattleCommand command)
+    {
+        BattleCharacter user = command.user;
+        switch(command.commandType)
+        {
+            case BattleCommandType.AttackMagic:
+            return user.remainingAttackMagicUses != 0;
+            
+            case BattleCommandType.JobSkill:
+            return user.remainingJobSkillUses != 0;
+            
+            case BattleCommandType.FreeSkill:
+            return user.remainingFreeSkillUses != 0;
+        }
+        //通常攻撃などは常に可能
+        return true;
+    }
+
 }
