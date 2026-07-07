@@ -25,4 +25,8 @@ public class SkillData : ScriptableObject
 
     [Header("特殊効果")]
     public List<EffectData> effects = new();
+
+    [Header("skillの使用回数")]
+    public bool hasUseLimit; //使用制限があるか（ないならfalse）
+    public int maxUses; //何回までスキル使えるか
 }

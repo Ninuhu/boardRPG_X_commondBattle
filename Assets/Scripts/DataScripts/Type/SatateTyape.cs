@@ -1,4 +1,4 @@
-public enum StateType
+/*public enum StatType
 {
     None,
     HP,
@@ -7,4 +7,4 @@ public enum StateType
     MagicAttack,
     MagicDefense,
     Speed
-}
+}*/

@@ -116,12 +116,39 @@ public class BattleCharacter
         isPlayer = true;
 
         maxHP = data.maxHP;
-        currentHP = data.maxHP;
+        currentHP = data.currentHP;
         attack = data.attack;
         defense = data.defense;
         magicAttack = data.magicAttack;
         magicDefense = data.magicDefense;
         speed = data.speed;
+
+
+        equippedAttackMagic = data.equippedAttackMagic;
+        equippedDefenseMagic = data.equippedDefenseMagic;
+        
+
+        
+        if(data.currentJob != null) //職業スキルあるとき
+        {
+            equippedJobSkill = data.currentJob.jobSkill;
+            remainingAttackMagicUses = data.currentJob.attackMagicUses;
+        }
+        
+        // 防御スキルも将来使うなら
+        //equippedJobDefenseSkill = data.currentJob.jobSkillDefense;
+        
+        equippedFreeSkill = data.equippedFreeSkill;
+        
+        remainingAttackMagicUses = data.currentJob.attackMagicUses;
+        
+        if(equippedJobSkill != null && equippedJobSkill.hasUseLimit) //スキルの使用制限回数がある場合
+        remainingJobSkillUses = equippedJobSkill.maxUses; 
+        
+        else remainingJobSkillUses = -1; // 無制限（＝-1）
+        
+        // 状態異常
+        statusEffects = new List<ActiveStatusEffect>(data.statusEffects);
     }
     // 敵データ
     public BattleCharacter(EnemyData data)
@@ -137,6 +164,21 @@ public class BattleCharacter
         magicAttack = data.magicAttack;
         magicDefense = data.magicDefense;
         speed = data.speed;
+
+        equippedAttackMagic = data.equippedAttackMagic;
+        equippedDefenseMagic = data.equippedDefenseMagic;
+        
+        
+        equippedJobSkill = data.skill;
+        remainingAttackMagicUses = data.attackMagicUses;
+        
+        if(equippedJobSkill != null && equippedJobSkill.hasUseLimit)
+        remainingJobSkillUses = equippedJobSkill.maxUses;
+        else remainingJobSkillUses = -1;
+
+
+        // 状態異常
+        statusEffects = new();
     }
 
 }

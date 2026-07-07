@@ -15,6 +15,17 @@ public enum EffectTarget
 }
 
 
+public enum StatType
+{
+    None,
+    HP,
+    Attack,
+    Defense,
+    MagicAttack,
+    MagicDefense,
+    Speed
+}
+
 
 [Serializable]
 public class EffectData
@@ -24,6 +35,8 @@ public class EffectData
     
     [Header("対象")]
     public EffectTarget target = EffectTarget.Target;
+    [Header("対象ステータス")]
+    public StatType statType;
 
     [Header("値の計算方法")]
     public EffectValueType valueType;

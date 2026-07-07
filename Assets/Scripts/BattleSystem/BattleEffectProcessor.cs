@@ -15,6 +15,19 @@ public static class BattleEffectProcessor
         
     }
 
+    public static void ProcessTurnEnd(BattleCharacter character)
+    {
+        ProcessStatus(character);
+        ProcessBuffs(character);
+        ProcessDebuffs(character);
+    }
+
+
+
+
+
+
+
     //||||||||||||||||||||||||||||||||||||||||||||||
     /* EffectDataを1つ実行
     発動率判定もここで行う*/
@@ -222,4 +235,76 @@ public static class BattleEffectProcessor
         if(character.currentHP <=0) character.currentHP = 1;
         
     }
+
+
+
+
+    //||||||||||||||||||||||||||||||||||||||||
+    //ターン終了時の状態異常・Buff・Debuff処理
+    //||||||||||||||||||||||||||||||||||||||||
+    //状態異常処理
+    static void ProcessStatus(BattleCharacter character)
+    {
+        for(int i=character.statusEffects.Count -1;i>=0;i--)
+        {
+            ActiveStatusEffect status = character.statusEffects[i];
+            
+            switch(status.statusType)
+            
+            {
+                case StatusEffectType.Poison:
+                character.currentHP -= Mathf.Max(1, character.maxHP / 10);
+                break;
+                
+                case StatusEffectType.HighPoison:
+                character.currentHP -= Mathf.Max(1, character.maxHP / 5);
+                break;
+
+            // Sleep
+            // Curse
+            // Paralysis
+            // あとで追加
+            }
+            
+            if(!status.permanent)
+            {
+                status.remainingTurns--;
+                if(status.remainingTurns <= 0)
+                character.statusEffects.RemoveAt(i);
+            }
+        }
+        character.currentHP = Mathf.Max(0, character.currentHP);
+    }
+
+    //バフ府減少
+    static void ProcessBuffs(BattleCharacter character)
+    {
+        for(int i = character.activeBuffs.Count - 1; i >= 0; i--)
+        {
+            ActiveEffect buff = character.activeBuffs[i];
+            if(buff.isPermanent) continue;
+            
+            buff.remainingTurns--;
+            if(buff.remainingTurns <= 0) character.activeBuffs.RemoveAt(i);
+        }
+    }
+
+
+    //Debuff減少
+    static void ProcessDebuffs(BattleCharacter character)
+    {
+        for(int i = character.activeDebuffs.Count - 1; i >= 0; i--)
+        {
+            ActiveEffect debuff = character.activeDebuffs[i];
+            if(debuff.isPermanent) continue;
+            
+            
+            debuff.remainingTurns--;
+            
+            if(debuff.remainingTurns <= 0) character.activeDebuffs.RemoveAt(i);
+        }
+    }
+
+    
+
 }

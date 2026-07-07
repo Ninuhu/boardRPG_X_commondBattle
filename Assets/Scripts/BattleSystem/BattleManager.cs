@@ -1,5 +1,7 @@
 using UnityEngine;
 
+//ターン管理だけ
+
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance;
@@ -125,18 +127,41 @@ public class BattleManager : MonoBehaviour
     void ExecuteTurn()
     {
         Debug.Log("Turn Execute");
+        
+        BattleCommand first;
+        BattleCommand second;
+        
+        //||||||||||||||||||||||||||||||||||||||
+        // 先攻・後攻の決定
         if(playerFirst)
         {
-            ExecuteAction(attackCommand,defenseCommand);
-            if(!battleEnded) ExecuteAction(defenseCommand,attackCommand);
+            first = attackCommand;
+            second = defenseCommand;
         }
         
         else
         {
-            ExecuteAction(defenseCommand,attackCommand);
-            if(!battleEnded) ExecuteAction(attackCommand,defenseCommand);
+            first = defenseCommand;
+            second = attackCommand;
         }
+        
+        //||||||||||||||||||||||||||||||||||||||
+        // 先攻行動
+        BattleActionExecutor.Execute(first, second);
+
+        // 戦闘終了チェック
         CheckBattleEnd();
+        if(battleEnded) return;
+        
+        
+        //||||||||||||||||||||||||||||||||||||||
+        // 後攻行動
+        BattleActionExecutor.Execute(second, first);
+        
+        
+        // 再チェック
+        CheckBattleEnd();
+        
         if(!battleEnded) EndTurn();
     }
 
@@ -152,16 +177,13 @@ public class BattleManager : MonoBehaviour
     // ターン終了
     void EndTurn()
     {
-        // TODO
-
-        // 状態異常
-
-        // Buff
-
-        // Debuff
-
-        // 使用回数
-
+        
+        // プレイヤー
+        BattleEffectProcessor.ProcessTurnEnd(player);
+        
+        // 敵
+        BattleEffectProcessor.ProcessTurnEnd(enemy);
+        
         StartTurn();
     }
 

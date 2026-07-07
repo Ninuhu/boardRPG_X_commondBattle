@@ -36,12 +36,12 @@ public class SpeedGaugeController : MonoBehaviour
         timer += Time.deltaTime;
 
         float ratio = playerSPD / (playerSPD + enemySPD);
-        float targetX = barWidth * ratio;
+        //float targetX = barWidth * ratio;
 
         float pingPong = Mathf.PingPong(timer * 300f, barWidth);
 
         arrow.anchoredPosition = new Vector2(pingPong, 0);
-        if (Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             StopGauge();
         }
@@ -60,4 +60,30 @@ public class SpeedGaugeController : MonoBehaviour
 
         callback?.Invoke(playerFirst);
     }
+    void ExecuteTurn()
+{
+    Debug.Log("Turn Execute");
+
+    if(playerFirst)
+    {
+        ExecuteAction(player, enemy);
+        if(enemy.currentHP > 0)
+            ExecuteAction(enemy, player);
+    }
+    else
+    {
+        ExecuteAction(enemy, player);
+        if(player.currentHP > 0)
+            ExecuteAction(player, enemy);
+    }
+
+    CheckBattleEnd();
+
+    if(!battleEnded)
+        EndTurn();
+}
+void ExecuteAction(BattleCharacter attacker, BattleCharacter defender)
+{
+    // BattleCalculator呼び出し予定
+}
 }
