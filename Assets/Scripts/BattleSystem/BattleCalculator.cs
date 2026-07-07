@@ -201,6 +201,7 @@ public static class BattleCalculator
         }
         foreach (ActiveEffect debuff in character.activeDebuffs)
         {
+            //
             if (debuff.effect.duration == 0) continue;
             if (debuff.effect.statType != stat) continue;
             
