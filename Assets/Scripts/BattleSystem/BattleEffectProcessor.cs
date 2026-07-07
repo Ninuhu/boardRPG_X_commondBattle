@@ -17,9 +17,15 @@ public static class BattleEffectProcessor
 
     public static void ProcessTurnEnd(BattleCharacter character)
     {
-        ProcessStatus(character);
+        // 状態異常処理
+         ProcessStatus(character);
+        // Buffターン減少
         ProcessBuffs(character);
+        // Debuffターン減少
         ProcessDebuffs(character);
+       
+    
+    
     }
 
 
@@ -253,15 +259,32 @@ public static class BattleEffectProcessor
             
             {
                 case StatusEffectType.Poison:
-                character.currentHP -= Mathf.Max(1, character.maxHP / 10);
+                character.currentHP -= Mathf.Max(1, character.maxHP / 16);
+                if(character.currentHP <= 0)
+                {
+                    character.currentHP = 0;
+                    character.isDead = true;
+                }
                 break;
                 
                 case StatusEffectType.HighPoison:
-                character.currentHP -= Mathf.Max(1, character.maxHP / 5);
+                character.currentHP -= Mathf.Max(1, character.maxHP / 6);
+                if(character.currentHP <= 0)
+                {
+                    character.currentHP = 0;
+                    character.isDead = true;
+                }
+                break;
+                case StatusEffectType.Curse:
+                character.currentHP -= Mathf.Max(1, character.maxHP / 8);
+                if(character.currentHP <= 0)
+                {
+                    character.currentHP = 0;
+                    character.isDead = true;
+                }
                 break;
 
             // Sleep
-            // Curse
             // Paralysis
             // あとで追加
             }
@@ -305,6 +328,5 @@ public static class BattleEffectProcessor
         }
     }
 
-    
 
 }
