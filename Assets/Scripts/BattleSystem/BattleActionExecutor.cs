@@ -29,7 +29,7 @@ public static class BattleActionExecutor
 
     //|||||||||||||||||||||||||||
     //全力攻撃
-    static void ExecuteAllOutAttack(BattleCommand attack, BattleCommand defense)
+    static void ExecuteAllOutAttack(BattleCommand attack,BattleCommand defense)
     {
         if(BattleDefenseCalculator.IsCounter(defense))
         {
@@ -46,7 +46,45 @@ public static class BattleActionExecutor
     //魔法攻撃
     static void ExecuteAttackMagic(BattleCommand attack,BattleCommand defense)
     {
-        Debug.Log("Magic Attack (TODO)");
+        BattleCharacter user = attack.user;
+        BattleCharacter target = defense.user;
+        
+        MagicData magic = user.equippedAttackMagic;
+        
+        // 攻撃魔法未装備
+        if(magic == null)
+        {
+            Debug.Log("Attack Magic is null");
+            return;
+        }
+        
+        
+        // カウンター
+        if(BattleDefenseCalculator.IsCounter(defense))
+        {
+            int counterDamage =BattleCalculator.CalculateCounterDamage(defense.user,user);
+            user.currentHP -= counterDamage;
+            
+            
+            Debug.Log($"Counter {counterDamage}");
+            return;
+        }
+        
+        // 防御倍率
+        float multiplier =BattleDefenseCalculator.GetMagicMultiplier(defense.commandType,defense.user.equippedDefenseMagic);
+        
+        
+        // ダメージ計算
+        int damage =BattleCalculator.CalculateMagicDamage(user,target,magic,multiplier);
+        // クリティカル
+        if(BattleCalculator.IsCritical(user,target))　damage = BattleCalculator.ApplyCritical(damage);
+        
+        // ダメージ
+        target.currentHP -= damage;
+        Debug.Log($"{magic.magicName} : {damage}");
+        
+        // 特殊効果
+        BattleEffectProcessor.ApplyEffects(user,target,magic.effects);
     }
 
 
@@ -54,15 +92,48 @@ public static class BattleActionExecutor
     //職業スキル
     static void ExecuteJobSkill(BattleCommand attack,BattleCommand defense)
     {
-        Debug.Log("Job Skill (TODO)");
+        BattleCharacter user = attack.user;
+        BattleCharacter target = defense.user;
+        SkillData skill = user.equippedJobSkill;
+        
+        // スキル未装備
+        if(skill == null)
+        {
+            Debug.Log("Job Skill is null");
+            return;
+        }
+        // 威力があるなら攻撃
+        if(skill.power > 0)
+        {
+            float multiplier =BattleDefenseCalculator.GetMultiplier(defense.commandType);
+            
+            int damage =BattleCalculator.CalculateSkillDamage(user,target,skill,multiplier);
+            target.currentHP -= damage;
+        }
+        
+        
+        Debug.Log($"Job Skill : {skill.skillName}");
+        // スキル効果実行
+        BattleEffectProcessor.ApplyEffects(user,target,skill.effects);
     }
     
     //|||||||||||||||||||||||||||
-    //自由選択スキル
+    // 自由スキル
     static void ExecuteFreeSkill(BattleCommand attack,BattleCommand defense)
     {
-        Debug.Log("Free Skill (TODO)");
-    }
+        SkillData skill = attack.user.equippedFreeSkill;
+        if(skill == null) return;
+        
+        
+        float multiplier = BattleDefenseCalculator.GetMultiplier(defense.commandType);
+        int damage = BattleCalculator.CalculateSkillDamage(attack.user,defense.user,skill,multiplier);
+        
+        if (BattleCalculator.IsCritical(attack.user,defense.user)) damage = BattleCalculator.ApplyCritical(damage);
+        
+        defense.user.currentHP -= damage;
+        
+        BattleEffectProcessor.ApplyEffects(attack.user,defense.user,skill.effects);
+        }
     
     //||||||||||||||||||||||\
     //降参
@@ -103,19 +174,19 @@ public static class BattleActionExecutor
                 //魔法こうげっき
             case BattleCommandType.AttackMagic:
                 ExecuteAttackMagic(action,target);
-                ConsumeSkillUse(action.user, action.commandType);
+                ConsumeSkillUse(action.user,action.commandType);
                 break;
 
                 //職業スキル
             case BattleCommandType.JobSkill:
                 ExecuteJobSkill(action,target);
-                ConsumeSkillUse(action.user, action.commandType);
+                ConsumeSkillUse(action.user,action.commandType);
                 break;
 
                 //自由選択スキル
             case BattleCommandType.FreeSkill:
                 ExecuteFreeSkill(action,target);
-                ConsumeSkillUse(action.user, action.commandType);
+                ConsumeSkillUse(action.user,action.commandType);
                 break;
 
                 //降参
@@ -131,7 +202,7 @@ public static class BattleActionExecutor
 
     //||||||||||||||||||||||||||||||||||||||||||||||
     // 使用回数減少
-    static void ConsumeSkillUse(BattleCharacter character, BattleCommandType type)
+    static void ConsumeSkillUse(BattleCharacter character,BattleCommandType type)
     {
         switch(type)
         {

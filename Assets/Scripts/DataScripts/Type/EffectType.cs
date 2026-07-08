@@ -1,7 +1,7 @@
 public enum EffectType
 {
     None,
-
+    Attack, //Skillの攻撃技用
     Buff, //自分のステータス変化
     Debuff, //敵のステータス変化
 

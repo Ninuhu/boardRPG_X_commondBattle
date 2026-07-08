@@ -9,6 +9,9 @@ public class BattleManager : MonoBehaviour
     [Header("戦闘キャラクター")]
     private BattleCharacter player;
     private BattleCharacter enemy;
+
+    public BattleCharacter Player => player; //UIのBattleManager.Instance.playerの参照用
+    public BattleCharacter Enemy => enemy; //UIのBattleManager.Instance.enemyの参照用
     //private bool isBoss; //ボス化雑魚敵か
 
     [Header("現在のコマンド")]
@@ -21,12 +24,11 @@ public class BattleManager : MonoBehaviour
 
     [Header("戦闘状態")]
     private bool battleEnded; //戦闘が終わったか否か
+    public bool IsBattleEnded => battleEnded; //UIのbattleEndedを取得用
     private bool isPvP; // Enemyではなくplayerかいなか
     
    
     
-
-
 
     // 初期化
     private void Awake()
@@ -85,7 +87,7 @@ public class BattleManager : MonoBehaviour
 
         // TODO
         // 目押し開始
-        SpeedGaugeUI.Instance.StartGauge(player.speed,enemy.speed,OnFirstTurnDecided);
+        SpeedGaugeController.Instance.StartGauge(player.speed,enemy.speed,OnFirstTurnDecided);
         // BattleUI表示
     }
 
@@ -164,13 +166,6 @@ public class BattleManager : MonoBehaviour
         
         if(!battleEnded) EndTurn();
     }
-
-    //||||||||||||||||||||||||||||||||||||||||
-    // // 行動実行
-    void ExecuteAction(BattleCommand action,BattleCommand target)
-    {
-        //BattleActionExecutor.Execute(action,target);
-    }
     
 
     //||||||||||||||||||||||||||||||||||||||||
@@ -184,7 +179,9 @@ public class BattleManager : MonoBehaviour
         // 敵
         BattleEffectProcessor.ProcessTurnEnd(enemy);
         
-        StartTurn();
+        // ターン終了時の毒・呪いなどで死亡したか確認
+        CheckBattleEnd();
+        if(!battleEnded) StartTurn();
     }
 
     //||||||||||||||||||||||||||||||||||||||||

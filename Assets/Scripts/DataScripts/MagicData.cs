@@ -15,7 +15,7 @@ public class MagicData : ScriptableObject
     public Sprite icon;
 
     [Header("分類")]
-    public MagicType magicType;
+    public MagicType magicType; //攻撃魔法か防御魔法か
 
     [Header("性能")]
     public int power;

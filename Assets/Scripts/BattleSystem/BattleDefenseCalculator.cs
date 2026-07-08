@@ -15,6 +15,7 @@ public static class BattleDefenseCalculator
             // 防御魔法
             case BattleCommandType.DefenseMagic:
                 return 2.0f;
+            
 
             // カウンター
             case BattleCommandType.Counter:
@@ -36,6 +37,30 @@ public static class BattleDefenseCalculator
                 return 2.75f;
         }
     }
+    //魔法専用の関数
+    public static float GetMagicMultiplier(BattleCommandType commandType,MagicData defenseMagic)
+    {
+        switch (commandType)
+        {
+            case BattleCommandType.Defense: return 2.0f;
+            
+            case BattleCommandType.DefenseMagic:
+            if (defenseMagic == null) return 1.0f;
+            switch (defenseMagic.power)
+            {
+                case 5:  return 0.375f;
+                case 15: return 0.20f;
+                case 20: return 0.10f;
+                default: return 1.0f;
+            }
+            case BattleCommandType.Counter: return 2.5f;
+            default: return 2.75f;
+        }
+    }
+
+
+
+
 
     //||||||||||||||||||||||||||||||||||||||||||||||
     // カウンター判定

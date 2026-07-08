@@ -93,7 +93,7 @@ public static class BattleCalculator
 ======================*/
     public static int CalculateMagicDamage(BattleCharacter attacker,BattleCharacter defender,MagicData magic,float defenseMultiplier)
     {
-        if (magic == null) return 0; //攻撃魔法なしのおときnull
+        if(magic == null) return 0; //攻撃魔法なしのおときnull
         float baseDamage = GetMagicAttack(attacker) * 1.5f - GetMagicDefense(defender);
 
         if(baseDamage<1) baseDamage = 1;
@@ -117,6 +117,21 @@ public static class BattleCalculator
         return Mathf.FloorToInt(baseDamage * 2.25f * random);
     }
 
+    //||||||||||||||||||||||||||||||
+    // スキルダメージ
+    public static int CalculateSkillDamage(BattleCharacter attacker,BattleCharacter defender,SkillData skill,float defenseMultiplier)
+    {
+        if(skill == null) return 0;
+
+        float baseDamage = GetAttack(attacker) * skill.power - GetDefense(defender);
+
+        if(baseDamage<1) baseDamage = 1;
+
+        float random = Random.Range(0.95f,1.01f);
+
+        return Mathf.FloorToInt(baseDamage * defenseMultiplier * random);
+    }
+
     //|||||||||||||||||||||||||
     // クリティカル(仮)
     public static bool IsCritical(BattleCharacter attacker,BattleCharacter defender)
@@ -124,6 +139,7 @@ public static class BattleCalculator
         /*const float Min_Critical = 0.05f;
         const float Max_Critical = 0.50f;*/
         float chance = 0.05f + (GetSpeed(attacker) - GetSpeed(defender)) * 0.01f;
+        
 
         chance = Mathf.Clamp(chance,0.05f,0.50f);
 
@@ -136,7 +152,7 @@ public static class BattleCalculator
     public static bool IsDodged(BattleCharacter attacker,BattleCharacter defender)
     {
         float attackerSpeed = GetSpeed(attacker);
-        float defenderSpeed = Mathf.Max(1, GetSpeed(defender)); // attacker.speed / defenderSpeed==0になったら壊れるから
+        float defenderSpeed = Mathf.Max(1,GetSpeed(defender)); // attacker.speed / defenderSpeed==0になったら壊れるから
         float dodgeRate = 1f - (attackerSpeed / defenderSpeed) + 0.01f;
 
 
@@ -159,29 +175,29 @@ public static class BattleCalculator
     // Buff・Debuff込み攻撃力
     public static int GetAttack(BattleCharacter character)
     {
-        return GetStat(character, StatType.Attack);
+        return GetStat(character,StatType.Attack);
     }
     // Buff・Debuff込み防御力
     public static int GetDefense(BattleCharacter character)
     {
-        return GetStat(character, StatType.Defense);
+        return GetStat(character,StatType.Defense);
     }
     // Buff・Debuff込み魔攻
     public static int GetMagicAttack(BattleCharacter character)
     {
-        return GetStat(character, StatType.MagicAttack);
+        return GetStat(character,StatType.MagicAttack);
     }
     // Buff・Debuff込み魔防
     public static int GetMagicDefense(BattleCharacter character)
     {
-        return GetStat(character, StatType.MagicDefense);
+        return GetStat(character,StatType.MagicDefense);
     }
     // Buff・Debuff込み素早さ
     public static int GetSpeed(BattleCharacter character)
     {
-        return GetStat(character, StatType.Speed);
+        return GetStat(character,StatType.Speed);
     }
-    static int GetStat(BattleCharacter character, StatType stat)
+    static int GetStat(BattleCharacter character,StatType stat)
     {
         float value = stat switch
         {
@@ -189,36 +205,39 @@ public static class BattleCalculator
             StatType.Defense => character.defense,
             StatType.MagicAttack => character.magicAttack,
             StatType.MagicDefense => character.magicDefense,
-            StatType.Speed => character.speed, _ => 0
+            StatType.Speed => character.speed,_ => 0
         };
+
+
+        
         
         foreach (ActiveEffect buff in character.activeBuffs)
         {
-            if (buff.effect.duration == 0) continue;
-            if (buff.effect.statType != stat) continue;
+            if(buff.effect.duration == 0) continue;
+            if(buff.effect.statType != stat) continue;
             
-            value = ApplyEffectValue(value, buff.effect);
+            value = ApplyEffectValue(value,buff.effect);
         }
         foreach (ActiveEffect debuff in character.activeDebuffs)
         {
             //
-            if (debuff.effect.duration == 0) continue;
-            if (debuff.effect.statType != stat) continue;
+            if(debuff.effect.duration == 0) continue;
+            if(debuff.effect.statType != stat) continue;
             
-            value = ApplyEffectValue(value, debuff.effect);
+            value = ApplyEffectValue(value,debuff.effect);
         }
         
         foreach (ActiveEffect debuff in character.activeDebuffs)
         {
-            if (debuff.effect.statType != stat) continue;
-            value = ApplyEffectValue(value, debuff.effect);
+            if(debuff.effect.statType != stat) continue;
+            value = ApplyEffectValue(value,debuff.effect);
         }
         
         return Mathf.RoundToInt(value);
     }
     
     
-    static float ApplyEffectValue(float value, EffectData effect)
+    static float ApplyEffectValue(float value,EffectData effect)
     {
         switch (effect.valueType)
         {

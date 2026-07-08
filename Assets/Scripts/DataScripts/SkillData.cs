@@ -21,7 +21,14 @@ public class SkillData : ScriptableObject
     public Sprite icon;
     [Header("性能")]
     public SkillType skillType; //攻撃コマンドか防御コマンド用か
+    
+    
+    /*
+    2 → 通常攻撃くらい
+    3 → 全力攻撃くらい
+    4 → 超強い*/
     public int power; //威力（バフとかなら０）
+
 
     [Header("特殊効果")]
     public List<EffectData> effects = new();
